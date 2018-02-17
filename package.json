@@ -26,7 +26,8 @@
     "classnames": "^2.2.5",
     "copy-text-to-clipboard": "^1.0.3",
     "jsx-tikzcd": "^0.2.2",
-    "preact": "^8.2.6"
+    "preact": "^8.2.6",
+    "mathjax": "^2.7.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
