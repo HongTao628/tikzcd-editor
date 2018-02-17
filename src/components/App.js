@@ -3,6 +3,7 @@ import copyText from 'copy-text-to-clipboard'
 import * as diagram from '../diagram'
 
 import Grid from './Grid'
+import Code from './Code'
 import Properties from './Properties'
 import Toolbox, {Button, Separator} from './Toolbox'
 
@@ -146,7 +147,33 @@ export default class App extends Component {
             diagram: evt.data,
             selectedEdge: edgeAdded ? evt.data.edges.length - 1 : this.state.selectedEdge
         })
+
+		if(this.settingData) {
+			return false;
+		}
+
+        let code = diagram.toTeX(this.state.diagram)
+		this.settingCode = true;
+		document.getElementById("code").value = code;
+		this.settingCode = false;
     }
+
+	handleCodeChange = evt => {
+		if(this.settingCode) {
+			return false;
+		}
+		
+		this.settingData = true;
+		try {
+			this.setState({
+				diagram: diagram.fromCode(document.getElementById("code").value),
+				selectedEdge: null
+			});
+		} catch (err) {
+			console.log('Invalid code', err);
+		}
+		this.settingData = false;
+	}
 
     handleEdgeClick = evt => {
         this.setState({selectedEdge: this.state.selectedEdge === evt.edge ? null : evt.edge})
@@ -223,6 +250,10 @@ export default class App extends Component {
                 onDataChange={this.handleDataChange}
                 onEdgeClick={this.handleEdgeClick}
             />
+
+			<Code id="code"
+                onCodeChange={this.handleCodeChange}
+			/>
 
             <Properties
                 edgeId={this.state.selectedEdge}
