@@ -49,7 +49,7 @@ export function fromBase64(base64) {
 }
 
 export function toTeX(diagram) {
-    return render(
+    let code = render(
         <Diagram>
             {diagram.nodes.map((node, i) =>
                 <Node
@@ -89,7 +89,25 @@ export function toTeX(diagram) {
                 />
             ])}
         </Diagram>
-    )
+    );
+
+	code = code.replace("\\begin{tikzcd}\n","").replace("\n\\end{tikzcd}","");
+	let lines = code.split(" \\\\\n");
+	for(let i in lines) {
+		lines[i] = lines[i].split(" & ");
+	}
+	for(let j in lines[1]) {
+		let maxLength = Math.max.apply(null, lines.map( line => line[j].length ));
+		for(let i in lines) {
+			console.log(lines[i][j]);
+			lines[i][j] = lines[i][j].padEnd(maxLength, " ");
+		}
+	}
+	for(let i in lines) {
+		lines[i] = lines[i].join(" & ");
+	}
+	
+	return "\\begin{tikzcd}\n" + lines.join(" \\\\\n") + "\n\\end{tikzcd}";
 }
 
 export function fromCode(code) {
