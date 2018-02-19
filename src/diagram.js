@@ -65,6 +65,7 @@ export function toTeX(diagram) {
                     to={edge.to}
                     value={edge.value}
                     labelPosition={edge.labelPosition}
+                    labelPositionLongitudinal={edge.labelPositionLongitudinal}
                     args={[
                         ...[edge.head, edge.line, edge.tail].map((id, i) => ({
                             none: ['no head', null, null][i],
@@ -128,11 +129,17 @@ export function fromCode(code) {
 			// value
 			if(parts.length > 1 && parts[1].includes('"')) {
 				edge.value = parts[1].split('"')[1].split('"')[0];
-				if(parts[1].endsWith("'")) {
+				if(parts[1].includes("'")) {
 					edge.labelPosition = "right";
 				}
-				if(parts[1].endsWith("description")) {
+				if(parts[1].includes("description")) {
 					edge.labelPosition = "inside";
+				}
+				if(parts[1].includes("near start")) {
+					edge.labelPositionLongitudinal = "nearstart";
+				}
+				if(parts[1].includes("near end")) {
+					edge.labelPositionLongitudinal = "nearend";
 				}
 			}
 
