@@ -147,7 +147,7 @@ export function fromCode(code) {
 			// value
 			if(parts.length > 1 && parts[1].includes('"')) {
 				edge.value = parts[1].split('"')[1].split('"')[0];
-				if(parts[1].includes("'")) {
+				if(parts[1].includes("\"'")) {
 					edge.labelPosition = "right";
 				}
 				if(parts[1].includes("description")) {
